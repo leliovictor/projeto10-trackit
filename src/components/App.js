@@ -8,11 +8,12 @@ import LoginPage from "./LoginPage";
 import SignUp from "./SignUp";
 import HabitsPage from "./HabitsPage";
 import TodayPage from "./TodayPage";
+import Records from "./Records";
 
 export default function App() {
 
     const [login, setLogin] = useState({}); //Fazer de acordo com a necessidade;
-    
+
   return (
     <UserContext.Provider value={{login, setLogin}}> 
       <BrowserRouter>
@@ -20,6 +21,8 @@ export default function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/cadastro" element={<SignUp />} />
           <Route path="/hoje" element={<TodayPage />} />
+          <Route path="/habitos" element={<HabitsPage />} />
+          <Route path="/historico" element={<Records />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

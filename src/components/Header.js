@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <Content>
-      <Link to={"/"}><h1>TrackIt</h1></Link> 
+      <Link to={"/"}>TrackIt</Link> 
       <img src={login.image} alt="User photo" />
     </Content>
   );
@@ -30,7 +30,7 @@ const Content = styled.div`
   top:0;
   left: 0;
 
-  h1 {
+  a {
     font-family: "Playball", sans-serif;
     font-size: 38.982px;
     line-height: 49px;
