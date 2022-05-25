@@ -38,9 +38,14 @@ export default function LoginPage() {
     }
 
     function registerLogin(obj) {
-        console.log('entrei');
-        setLogin(obj);
-        navigate("/habitos");
+        setLogin({...obj, config: {
+          header: {
+              Authorization:`Bearer ${obj.token}`
+          }
+      }
+        });
+
+        navigate("/hoje");
     }
 
   return (

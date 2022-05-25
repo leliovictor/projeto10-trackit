@@ -7,20 +7,19 @@ import "../assets/styles/style.css";
 import LoginPage from "./LoginPage";
 import SignUp from "./SignUp";
 import HabitsPage from "./HabitsPage";
+import TodayPage from "./TodayPage";
 
 export default function App() {
 
     const [login, setLogin] = useState({}); //Fazer de acordo com a necessidade;
-
-    console.log(login);
-
+    
   return (
     <UserContext.Provider value={{login, setLogin}}> 
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/cadastro" element={<SignUp />} />
-          <Route path="/habitos" element={<HabitsPage />} />
+          <Route path="/hoje" element={<TodayPage />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
