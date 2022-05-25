@@ -8,7 +8,7 @@ import LoginPage from "./LoginPage";
 import SignUp from "./SignUp";
 import HabitsPage from "./HabitsPage";
 import TodayPage from "./TodayPage";
-import Records from "./Records";
+import RecordsPage from "./RecordsPage";
 
 export default function App() {
 
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/cadastro" element={<SignUp />} />
           <Route path="/hoje" element={<TodayPage />} />
           <Route path="/habitos" element={<HabitsPage />} />
-          <Route path="/historico" element={<Records />} />
+          <Route path="/historico" element={<RecordsPage />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

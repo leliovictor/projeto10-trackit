@@ -2,7 +2,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
 
-export default function Records() {
+export default function RecordsPage() {
   return (
     <Content>
       <Header />

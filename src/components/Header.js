@@ -36,6 +36,7 @@ const Content = styled.div`
     line-height: 49px;
 
     color: #ffffff;
+    cursor: pointer;
   }
 
   img {

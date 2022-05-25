@@ -9,21 +9,23 @@ export default function Footer() {
   return (
     <Div>
       <Link to={"/habitos"}>Hábitos</Link>
-      <Circular>
-        <CircularProgressbar
-          value={percentage}
-          text="Hoje"
-          background
-          backgroundPadding={6}
-          styles={buildStyles({
-            backgroundColor: "#52B6FF",
-            textColor: "#FFFFFF",
-            textSize: "18px",
-            pathColor: "#FFFFFF",
-            trailColor: "transparent",
-          })}
-        />
-      </Circular>
+      <Link to={"/hoje"}>
+        <Circular>
+          <CircularProgressbar
+            value={percentage}
+            text="Hoje"
+            background
+            backgroundPadding={6}
+            styles={buildStyles({
+              backgroundColor: "#52B6FF",
+              textColor: "#FFFFFF",
+              textSize: "18px",
+              pathColor: "#FFFFFF",
+              trailColor: "transparent",
+            })}
+          />
+        </Circular>
+      </Link>
       <Link to={"/historico"}>Histórico</Link>
     </Div>
   );
@@ -49,6 +51,7 @@ const Div = styled.div`
     text-align: center;
 
     color: #52b6ff;
+    cursor: pointer;
   }
 `;
 
