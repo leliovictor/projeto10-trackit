@@ -1,15 +1,27 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import styled from "styled-components";
+import { useState } from "react";
+import HabitCreation from "./HabitCreation";
 
 export default function HabitsPage() {
+
+  const [newHabit,setNewHabit] = useState(false);
+
+  function creationHabit() {
+    if (!newHabit) return <></>;
+
+    return <HabitCreation setNewHabit={setNewHabit}/>
+  }
+
   return (
     <Content>
       <Header />
       <MyHabits>
         <h1>Meus hábitos</h1>
-        <Button>+</Button>
+        <Button onClick={()=>setNewHabit(true)}>+</Button>
       </MyHabits>
+      {creationHabit()}
       <h2>
         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
         começar a trackear!
