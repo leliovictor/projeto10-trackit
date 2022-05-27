@@ -1,10 +1,24 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-export default function DayButton({ day }) {
+export default function DayButton({ day, index, habit, setHabit }) {
   const [select, setSelect] = useState(false);
 
-  return <WeekButton select={select} onClick={()=>setSelect(!select)}>{day}</WeekButton>;
+  function chooseHabitDay() {
+    if(!select) {
+        const days = [...habit.days,index].sort((a,b) => a-b);
+        setHabit({...habit,days});
+    }
+    
+    if(select) {
+        const days = habit.days.filter((value) => value !== index);
+        setHabit({...habit,days});
+    }
+    
+    setSelect(!select);
+  }
+
+  return <WeekButton select={select} onClick={chooseHabitDay}>{day}</WeekButton>;
 }
 
 const WeekButton = styled.div`

@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     function registerLogin(obj) {
         setLogin({...obj, config: {
-          header: {
+          headers: {
               Authorization:`Bearer ${obj.token}`
           }
       }

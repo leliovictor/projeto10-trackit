@@ -1,21 +1,68 @@
 import DayButton from "./DayButton";
 import styled from "styled-components";
+import { useState, useContext } from "react";
+import UserContext from "../contexts/UserContext";
+import axios from "axios";
 
-export default function HabitCreation({setNewHabit}) {
+export default function HabitCreation({ display, setNewHabit }) {
   const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
+  const { login } = useContext(UserContext);
+
+  const [habit, setHabit] = useState({ name: "", days: [] });
+
+  function nameHabit(e) {
+    setHabit({ ...habit, name: e.target.value });
+  }
+
+  function postHabit() {
+    if (habit.name.length === 0) return alert("Digite o nome do seu hábito");
+    if (habit.days.length === 0) return alert("Escolha um dia da semana");
+
+    const promise = axios.post(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+      habit,
+      login.config
+    );
+
+        //ADICIONAR AQUI ANIMAÇÃO DO BUTTON E DISABLED INPUT;
+        //O THEN REMOVE O DISABLE E ESCONDE MENU, RESETAR ADD HABIT BUTTON? So ESCONDER?
+
+
+    promise
+    .then((res) => {
+        console.log(res.data);
+    })
+    .catch((err) => {
+        alert(`Error: ${err}`);
+      });
+  }
 
   return (
-    <Content>
-      <input type="text" placeholder="nome do hábito" />
+    <Content display={display}>
+      <input
+        type="text"
+        placeholder="nome do hábito"
+        value={habit.name}
+        onChange={(e) => nameHabit(e)}
+      />
       <div>
         {week.map((weekDay, index) => (
-          <DayButton key={index} day={weekDay} select={false} />
+          <DayButton
+            key={index}
+            index={index}
+            day={weekDay}
+            select={false}
+            habit={habit}
+            setHabit={setHabit}
+          />
         ))}
       </div>
       <InteractionButtons>
-        <CancelButton onClick={()=>setNewHabit(false)}>Cancelar</CancelButton>
-        <SaveButton>Salvar</SaveButton>
+        <CancelButton onClick={() => setNewHabit("none")}>
+          Cancelar
+        </CancelButton>
+        <SaveButton onClick={postHabit}>Salvar</SaveButton>
       </InteractionButtons>
     </Content>
   );
@@ -24,6 +71,7 @@ export default function HabitCreation({setNewHabit}) {
 const Content = styled.section`
   width: 100%;
   height: 180px;
+  display: ${(props) => props.display};
 
   background: #ffffff;
   border-radius: 5px;
@@ -50,8 +98,8 @@ const Content = styled.section`
   }
 
   input + div {
-      display: flex;
-        margin-bottom: 29px;
+    display: flex;
+    margin-bottom: 29px;
   }
 `;
 

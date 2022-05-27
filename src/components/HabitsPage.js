@@ -6,22 +6,16 @@ import HabitCreation from "./HabitCreation";
 
 export default function HabitsPage() {
 
-  const [newHabit,setNewHabit] = useState(false);
-
-  function creationHabit() {
-    if (!newHabit) return <></>;
-
-    return <HabitCreation setNewHabit={setNewHabit}/>
-  }
+  const [newHabit,setNewHabit] = useState("none");
 
   return (
     <Content>
       <Header />
       <MyHabits>
         <h1>Meus hábitos</h1>
-        <Button onClick={()=>setNewHabit(true)}>+</Button>
+        <Button onClick={()=>setNewHabit("inherit")}>+</Button>
       </MyHabits>
-      {creationHabit()}
+      <HabitCreation display={newHabit} setNewHabit={setNewHabit}/>
       <h2>
         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
         começar a trackear!
