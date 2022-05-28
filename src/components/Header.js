@@ -29,6 +29,7 @@ const Content = styled.div`
   position: fixed;
   top:0;
   left: 0;
+  z-index: 1;
 
   a {
     font-family: "Playball", sans-serif;

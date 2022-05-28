@@ -16,7 +16,7 @@ export default function TodayPage() {
 
   useEffect(() => {
     //Promise aqui, config dentro do login já
-  });
+  },[]);
 
   function checkHabits() {
     if (habits.length === 0) {

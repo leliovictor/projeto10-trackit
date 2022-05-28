@@ -4,10 +4,10 @@ import { useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
 
-export default function HabitCreation({ display, setNewHabit }) {
+export default function HabitCreation({ display, setCreationHabitDisplay }) {
   const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-  const { login } = useContext(UserContext);
+  const { login, setLogin } = useContext(UserContext);
 
   const [habit, setHabit] = useState({ name: "", days: [] });
 
@@ -25,18 +25,25 @@ export default function HabitCreation({ display, setNewHabit }) {
       login.config
     );
 
-        //ADICIONAR AQUI ANIMAÇÃO DO BUTTON E DISABLED INPUT;
-        //O THEN REMOVE O DISABLE E ESCONDE MENU, RESETAR ADD HABIT BUTTON? So ESCONDER?
-
+    //ADICIONAR AQUI ANIMAÇÃO DO BUTTON E DISABLED INPUT;
+    //O THEN REMOVE O DISABLE E ESCONDE MENU (OK), RESETAR ADD HABIT BUTTON(OK)
 
     promise
-    .then((res) => {
-        console.log(res.data);
-    })
-    .catch((err) => {
+      .then((res) => {
+        sucessCreationHabit(res.data);
+      })
+      .catch((err) => {
         alert(`Error: ${err}`);
       });
   }
+
+  function sucessCreationHabit(obj) {
+    setLogin({...login, refreshUserHabits:obj});
+    setCreationHabitDisplay("none");
+    setHabit({ name: "", days: [] });
+  }
+
+  console.log(login);
 
   return (
     <Content display={display}>
@@ -52,14 +59,14 @@ export default function HabitCreation({ display, setNewHabit }) {
             key={index}
             index={index}
             day={weekDay}
-            select={false}
             habit={habit}
             setHabit={setHabit}
+            changeBackgroundButton={true}
           />
         ))}
       </div>
       <InteractionButtons>
-        <CancelButton onClick={() => setNewHabit("none")}>
+        <CancelButton onClick={() => setCreationHabitDisplay("none")}>
           Cancelar
         </CancelButton>
         <SaveButton onClick={postHabit}>Salvar</SaveButton>

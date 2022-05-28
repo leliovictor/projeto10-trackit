@@ -1,24 +1,42 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function DayButton({ day, index, habit, setHabit }) {
+export default function DayButton({
+  day,
+  index,
+  habit,
+  setHabit,
+  changeBackgroundButton,
+}) {
   const [select, setSelect] = useState(false);
 
   function chooseHabitDay() {
-    if(!select) {
-        const days = [...habit.days,index].sort((a,b) => a-b);
-        setHabit({...habit,days});
-    }
-    
-    if(select) {
+    if (changeBackgroundButton) {
+      if (!select) {
+        const days = [...habit.days, index].sort((a, b) => a - b);
+        setHabit({ ...habit, days });
+      }
+
+      if (select) {
         const days = habit.days.filter((value) => value !== index);
-        setHabit({...habit,days});
+        setHabit({ ...habit, days });
+      }
     }
-    
-    setSelect(!select);
   }
 
-  return <WeekButton select={select} onClick={chooseHabitDay}>{day}</WeekButton>;
+  useEffect(() => {
+    if (habit.days.includes(index)) {
+      setSelect(true);
+    } else {
+      setSelect(false);
+    }
+  }, [habit]);
+
+  return (
+    <WeekButton select={select} onClick={chooseHabitDay}>
+      {day}
+    </WeekButton>
+  );
 }
 
 const WeekButton = styled.div`
@@ -33,8 +51,9 @@ const WeekButton = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 4px;
-  
-  color: ${props => props.select ? "#FFFFFF" : "#dbdbdb"};
-  background-color: ${props => props.select ? "#CFCFCF" : "#FFFFFF"};;
-  border: ${props => props.select ? "1px solid #CFCFCF" : "1px solid #d5d5d5"};
+
+  color: ${(props) => (props.select ? "#FFFFFF" : "#dbdbdb")};
+  background-color: ${(props) => (props.select ? "#CFCFCF" : "#FFFFFF")};
+  border: ${(props) =>
+    props.select ? "1px solid #CFCFCF" : "1px solid #d5d5d5"};
 `;

@@ -3,23 +3,24 @@ import Footer from "./Footer";
 import styled from "styled-components";
 import { useState } from "react";
 import HabitCreation from "./HabitCreation";
+import UserHabits from "./UserHabits";
 
 export default function HabitsPage() {
 
-  const [newHabit,setNewHabit] = useState("none");
+  const [creationHabitDisplay, setCreationHabitDisplay] = useState("none");
 
   return (
     <Content>
       <Header />
       <MyHabits>
         <h1>Meus hábitos</h1>
-        <Button onClick={()=>setNewHabit("inherit")}>+</Button>
+        <Button onClick={() => setCreationHabitDisplay("inherit")}>+</Button>
       </MyHabits>
-      <HabitCreation display={newHabit} setNewHabit={setNewHabit}/>
-      <h2>
-        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
-        começar a trackear!
-      </h2>
+      <HabitCreation
+        display={creationHabitDisplay}
+        setCreationHabitDisplay={setCreationHabitDisplay}
+      />
+      <UserHabits />
       <Footer />
     </Content>
   );
@@ -28,7 +29,7 @@ export default function HabitsPage() {
 const Content = styled.div`
   padding: 98px 17px 100px 17px;
   background: #f2f2f2;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 
   h1 {
@@ -46,11 +47,11 @@ const Content = styled.div`
 `;
 
 const MyHabits = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+`;
 
 const Button = styled.div`
   width: 40px;
