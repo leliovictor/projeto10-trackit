@@ -8,7 +8,7 @@ import TrashIcon from "../assets/images/trashIcon.svg";
 export default function UserHabits() {
   const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-  const { login } = useContext(UserContext);
+  const { login, setLogin } = useContext(UserContext);
 
   const [myHabits, setMyHabits] = useState([]);
 
@@ -41,8 +41,17 @@ export default function UserHabits() {
   }
 
   function deleteHabit(id) {
-      console.log(`vou deletar mais tarde o ID: ${id}`);
-      //BOTAR UM CONFIRM AQUI
+    const text = "Gostaria de deletar esse hábito?";
+    if (window.confirm(text) == true) {
+      const promise = axios.delete(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+        login.config
+      );
+
+      promise.catch((err) => console.log(`Error: ${err}`));
+
+      setLogin({ ...login, habitDelete: id });
+    }
   }
 
   console.log(myHabits);
@@ -51,18 +60,22 @@ export default function UserHabits() {
     return myHabits.map((habit, index) => (
       <UserHabitDiv key={index}>
         <h1>{habit.name}</h1>
-        <DeleteIcon src={TrashIcon} alt="Delete icon" onClick={() => deleteHabit(habit.id)} />
+        <DeleteIcon
+          src={TrashIcon}
+          alt="Delete icon"
+          onClick={() => deleteHabit(habit.id)}
+        />
         <WeekDays>
-        {week.map((weekDay, index) => (
-          <DayButton
-            key={index}
-            index={index}
-            day={weekDay}
-            habit={habit}
-            changeBackgroundButton={false}
-          />
+          {week.map((weekDay, index) => (
+            <DayButton
+              key={index}
+              index={index}
+              day={weekDay}
+              habit={habit}
+              changeBackgroundButton={false}
+            />
           ))}
-          </WeekDays>
+        </WeekDays>
       </UserHabitDiv>
     ));
   }
@@ -81,14 +94,13 @@ const UserHabitDiv = styled.div`
   border-radius: 5px;
 
   h1 {
-      margin-bottom: 10px;
+    margin-bottom: 10px;
   }
-
 `;
 
 const WeekDays = styled.div`
-    display: flex;
-`
+  display: flex;
+`;
 
 const DeleteIcon = styled.img`
   width: 13px;
@@ -96,5 +108,4 @@ const DeleteIcon = styled.img`
   position: absolute;
   right: 10px;
   top: 11px;
-
-`
+`;

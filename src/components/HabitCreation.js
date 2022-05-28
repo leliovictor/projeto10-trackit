@@ -43,8 +43,6 @@ export default function HabitCreation({ display, setCreationHabitDisplay }) {
     setHabit({ name: "", days: [] });
   }
 
-  console.log(login);
-
   return (
     <Content display={display}>
       <input
