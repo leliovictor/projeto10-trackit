@@ -81,7 +81,7 @@ const Content = styled.section`
   background: #f2f2f2;
   padding: 70px 17px 120px 17px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const P = styled.p`
