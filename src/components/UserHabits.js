@@ -54,8 +54,6 @@ export default function UserHabits() {
     }
   }
 
-  console.log(myHabits);
-
   function renderMyHabits() {
     return myHabits.map((habit, index) => (
       <UserHabitDiv key={index}>

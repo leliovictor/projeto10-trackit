@@ -4,36 +4,76 @@ import Footer from "./Footer";
 import styled from "styled-components";
 import { useEffect, useContext, useState } from "react";
 import UserContext from "../contexts/UserContext";
-import HabitCard from "./HabitCard";
+import TodayHabitsCards from "./TodayHabitsCards";
+import axios from "axios";
 
 export default function TodayPage() {
-  
-  const { login } = useContext(UserContext);
 
-  console.log(login);
+  const { login, setLogin } = useContext(UserContext);
 
-  const [habits, setHabits] = useState([]);
+  const [todayHabits, setTodayHabits] = useState([]);
+
+  const [percentage, setPercentage] = useState(0);
+
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    //Promise aqui, config dentro do login já
-  },[]);
+    const promise = axios.get(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+      login.config
+    );
+
+    promise
+      .then((res) => {
+        setTodayHabits(res.data);
+      })
+      .catch((err) => console.log(`Error: ${err}`));
+
+  }, [refresh]);
+
+  function checkPercentage() {
+
+    const count = todayHabits.filter((obj)=>obj.done).length;
+    const size = todayHabits.length;
+
+    const value = ((count * 100) / size).toFixed(0);
+
+    if(isNaN(value)) return 0;
+    
+    return value;
+  }
+
+  useEffect(()=> {
+    setPercentage(checkPercentage());
+  },[todayHabits]);
+
+  useEffect(() => {
+    setLogin({...login,percentage:percentage})
+  },[percentage]);
 
   function checkHabits() {
-    if (habits.length === 0) {
+    const anyDone = todayHabits.filter((obj) => obj.done).length;
+
+    if (todayHabits.length === 0 || anyDone === 0) {
       return <P color={"#BABABA"}>Nenhum hábito concluído ainda</P>;
     }
 
-    return <P color={"#8FC549"}>Tantos dos hábitos concluídos</P>;
+    return <P color={"#8FC549"}>{percentage}% dos hábitos concluídos</P>;
   }
-
-  //Vou precisar fazer um MAP AQUI do HabitCard ...
 
   return (
     <Content>
       <Header />
       <Date />
       {checkHabits()}
-      <HabitCard />
+      <TodayHabitsCards
+        todayHabits={todayHabits}
+        setTodayHabits={setTodayHabits}
+        percentage={percentage}
+        setPercentage={setPercentage}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
       <Footer />
     </Content>
   );
@@ -41,7 +81,7 @@ export default function TodayPage() {
 
 const Content = styled.section`
   padding-top: 70px;
-  background: #F2F2F2;
+  background: #f2f2f2;
   padding: 70px 17px 120px 17px;
   width: 100%;
   height: 100vh;

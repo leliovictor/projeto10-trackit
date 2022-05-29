@@ -9,51 +9,69 @@ import { useNavigate } from "react-router-dom";
 //FINAL DO PROJETO, MUDAR O VALUE DOS INPUT PARA A VARIAVEL {EMAIL,PASSWORD};
 
 export default function LoginPage() {
+  const { setLogin } = useContext(UserContext);
 
-    const { setLogin } = useContext(UserContext);
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+  function login(e) {
+    e.preventDefault();
 
-    function login(e) {
-        e.preventDefault();
-
-        /*const body = {
+    /*const body = {
             email,
             password
         }*/
 
-        const body = {
-            email:"lelio@victor.com",
-            password:"trackit"
-        }
-        
-        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",body)
-        
-        promise
-            .then(res=>registerLogin(res.data))
-            .catch(err=>{console.log(err)});
-    }
+    const body = {
+      email: "lelio@victor.com",
+      password: "trackit",
+    };
 
-    function registerLogin(obj) {
-        setLogin({...obj, config: {
-          headers: {
-              Authorization:`Bearer ${obj.token}`
-          }
-      }
-        });
+    const promise = axios.post(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+      body
+    );
 
-        navigate("/hoje");
-    }
+    promise
+      .then((res) => registerLogin(res.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function registerLogin(obj) {
+    setLogin({
+      ...obj,
+      config: {
+        headers: {
+          Authorization: `Bearer ${obj.token}`,
+        },
+      },
+    });
+
+    navigate("/hoje");
+  }
 
   return (
     <Content>
       <img src={Logo} alt="TrackIt logo" />
       <form onSubmit={login}>
-        <input type="email" placeholder="email" value="lelio@victor.com" onChange={(e)=>setEmail(e.target.value)} required/>
-        <input type="password" placeholder="senha" value="trackit" onChange={(e)=>setPassword(e.target.value)} required/>
+        <input
+          type="email"
+          placeholder="email"
+          value="lelio@victor.com"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="senha"
+          value="trackit"
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Entrar</button>
       </form>
       <Link to={"/cadastro"}>
