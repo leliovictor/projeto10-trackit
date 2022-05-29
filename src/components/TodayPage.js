@@ -27,7 +27,7 @@ export default function TodayPage() {
       .then((res) => {
         setTodayHabits(res.data);
       })
-      .catch((err) => console.log(`Error: ${err}`));
+      .catch((err) => console.log(`Error: ${err.response.data.message}`));
 
   }, [refresh]);
 

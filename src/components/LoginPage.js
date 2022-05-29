@@ -26,15 +26,10 @@ export default function LoginPage() {
 
     e.preventDefault();
 
-    /*const body = {
+    const body = {
             email,
             password
-        }*/
-
-    const body = {
-      email: "lelio@victor.com",
-      password: "trackit",
-    };
+        }
 
     const promise = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
@@ -44,7 +39,7 @@ export default function LoginPage() {
     promise
       .then((res) => registerLogin(res.data))
       .catch((err) => {
-        alert(`Error: ${err}`);
+        alert(`Error: ${err.response.data.message}`);
         setLoading(false);
       });
   }
@@ -75,7 +70,7 @@ export default function LoginPage() {
         <Input
           type="email"
           placeholder="email"
-          value="lelio@victor.com"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={loading ? "disabled" : ""}
@@ -84,7 +79,7 @@ export default function LoginPage() {
         <Input
           type="password"
           placeholder="senha"
-          value="trackit"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           disabled={loading ? "disabled" : ""}

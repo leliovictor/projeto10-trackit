@@ -25,7 +25,7 @@ export default function UserHabits() {
         setMyHabits(res.data);
       })
       .catch((err) => {
-        console.log(`Error: ${err}`);
+        console.log(`Error: ${err.response.data.message}`);
       });
   }, [refresh,login]);
 
