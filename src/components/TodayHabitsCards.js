@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 
-export default function TodayHabitsCards({ todayHabits, setTodayHabits, percentage, setPercentage, refresh, setRefresh }) {
+export default function TodayHabitsCards({ todayHabits, refresh, setRefresh }) {
   
-  const { login, setLogin } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   function requestHabitDone(id, done) {
     if (!done) {

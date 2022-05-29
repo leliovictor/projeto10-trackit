@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function HabitCreation({ display, setCreationHabitDisplay }) {
   const week = ["D", "S", "T", "Q", "Q", "S", "S"];
+  const [loading, setLoading] = useState(false);
 
   const { login, setLogin } = useContext(UserContext);
 
@@ -19,37 +21,48 @@ export default function HabitCreation({ display, setCreationHabitDisplay }) {
     if (habit.name.length === 0) return alert("Digite o nome do seu hábito");
     if (habit.days.length === 0) return alert("Escolha um dia da semana");
 
+    setLoading(true);
+
     const promise = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
       habit,
       login.config
     );
 
-    //ADICIONAR AQUI ANIMAÇÃO DO BUTTON E DISABLED INPUT;
     //O THEN REMOVE O DISABLE E ESCONDE MENU (OK), RESETAR ADD HABIT BUTTON(OK)
 
     promise
       .then((res) => {
         sucessCreationHabit(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         alert(`Error: ${err}`);
+        setLoading(false);
       });
   }
 
   function sucessCreationHabit(obj) {
-    setLogin({...login, refreshUserHabits:obj});
+    setLogin({ ...login, refreshUserHabits: obj });
     setCreationHabitDisplay("none");
     setHabit({ name: "", days: [] });
   }
 
+  function Loading() {
+    if (loading) return <ThreeDots color="#FFFFFF" height="10px" />;
+
+    return "Salvar";
+  }
+
   return (
     <Content display={display}>
-      <input
+      <Input
         type="text"
         placeholder="nome do hábito"
         value={habit.name}
         onChange={(e) => nameHabit(e)}
+        disabled={loading ? "disabled" : ""}
+        loading={loading}
       />
       <div>
         {week.map((weekDay, index) => (
@@ -59,7 +72,7 @@ export default function HabitCreation({ display, setCreationHabitDisplay }) {
             day={weekDay}
             habit={habit}
             setHabit={setHabit}
-            changeBackgroundButton={true}
+            changeBackgroundButton={!loading}
           />
         ))}
       </div>
@@ -67,7 +80,7 @@ export default function HabitCreation({ display, setCreationHabitDisplay }) {
         <CancelButton onClick={() => setCreationHabitDisplay("none")}>
           Cancelar
         </CancelButton>
-        <SaveButton onClick={postHabit}>Salvar</SaveButton>
+        <SaveButton onClick={postHabit}>{Loading()}</SaveButton>
       </InteractionButtons>
     </Content>
   );
@@ -82,25 +95,6 @@ const Content = styled.section`
   border-radius: 5px;
   padding: 18px;
   margin-bottom: 29px;
-
-  input {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #d5d5d5;
-    border-radius: 5px;
-    padding-left: 11px;
-    color: #666666;
-    font-size: 19.976px;
-    line-height: 25px;
-    margin-bottom: 8px;
-
-    ::placeholder {
-      font-size: 19.976px;
-      line-height: 25px;
-
-      color: #dbdbdb;
-    }
-  }
 
   input + div {
     display: flex;
@@ -132,6 +126,10 @@ const SaveButton = styled.button`
   border-radius: 4.63636px;
   border: none;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: #ffffff;
 `;
 
@@ -140,4 +138,24 @@ const CancelButton = styled.button`
   text-align: center;
   border: none;
   color: #52b6ff;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 45px;
+  border: 1px solid #d5d5d5;
+  background: ${(props) => (props.loading ? "#F2F2F2" : "#ffffff")};
+  border-radius: 5px;
+  padding-left: 11px;
+  color: #666666;
+  font-size: 19.976px;
+  line-height: 25px;
+  margin-bottom: 8px;
+
+  ::placeholder {
+    font-size: 19.976px;
+    line-height: 25px;
+
+    color: #dbdbdb;
+  }
 `;

@@ -1,45 +1,94 @@
 import Logo from "../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
-    const [name,setName] = useState('');
-    const [image,setImage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
 
-    function register(e) {
-        e.preventDefault();
+  function register(e) {
+    setLoading(true);
+    e.preventDefault();
 
-        const body = {
-            email,
-            name,
-            image,
-            password
-        }
+    const body = {
+      email,
+      name,
+      image,
+      password,
+    };
 
-        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",body);
+    const promise = axios.post(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+      body
+    );
 
-        promise
-        .then(res=>{navigate("/")})
-        .catch(err=>{console.log(err)});
-    }
+    promise
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(`Error: ${err}`);
+        setLoading(false);
+      });
+  }
+
+  function Loading() {
+    if (loading) return <ThreeDots color="#FFFFFF" height="15px" />;
+
+    return "Cadastrar";
+  }
 
   return (
     <Content>
       <img src={Logo} alt="TrackIt logo" />
       <form onSubmit={register}>
-        <input type="email" placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
-        <input type="password" placeholder="senha" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
-        <input type="text" placeholder="nome" value={name} onChange={(e)=>setName(e.target.value)} required/>
-        <input type="text" placeholder="foto" value={image} onChange={(e)=>setImage(e.target.value)} required/>
-        <button type="submit">Cadastrar</button>
+        <Input
+          type="email"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={loading ? "disabled" : ""}
+          loading={loading}
+        />
+        <Input
+          type="password"
+          placeholder="senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          disabled={loading ? "disabled" : ""}
+          loading={loading}
+        />
+        <Input
+          type="text"
+          placeholder="nome"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          disabled={loading ? "disabled" : ""}
+          loading={loading}
+        />
+        <Input
+          type="text"
+          placeholder="foto"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          required
+          disabled={loading ? "disabled" : ""}
+          loading={loading}
+        />
+        <button type="submit">{Loading()}</button>
       </form>
       <Link to={"/"}>
         <h1>Já tem uma conta? Faça login!</h1>
@@ -69,32 +118,15 @@ const Content = styled.section`
     margin-bottom: 25px;
   }
 
-  input {
-    margin-bottom: 6px;
-    width: 100%;
-    height: 45px;
-    background: #ffffff;
-    border: 1px solid #d5d5d5;
-    border-radius: 5px;
-    padding-left: 11px;
-
-    font-size: 19.976px;
-    line-height: 25px;
-
-    ::placeholder {
-      font-size: 19.976px;
-      line-height: 25px;
-
-      color: #dbdbdb;
-    }
-  }
-
   button {
     width: 303px;
     height: 45px;
     background: #52b6ff;
     border-radius: 4.63636px;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content:center;
 
     font-size: 20.976px;
     line-height: 26px;
@@ -110,5 +142,24 @@ const Content = styled.section`
     text-decoration-line: underline;
 
     color: #52b6ff;
+  }
+`;
+
+const Input = styled.input`
+  margin-bottom: 6px;
+  width: 100%;
+  height: 45px;
+  background: ${(props) => (props.loading ? "#F2F2F2" : "#ffffff")};
+  border: 1px solid #d5d5d5;
+  border-radius: 5px;
+  padding-left: 11px;
+  font-size: 19.976px;
+  line-height: 25px;
+
+  ::placeholder {
+    font-size: 19.976px;
+    line-height: 25px;
+
+    color: #dbdbdb;
   }
 `;

@@ -68,9 +68,6 @@ export default function TodayPage() {
       {checkHabits()}
       <TodayHabitsCards
         todayHabits={todayHabits}
-        setTodayHabits={setTodayHabits}
-        percentage={percentage}
-        setPercentage={setPercentage}
         refresh={refresh}
         setRefresh={setRefresh}
       />

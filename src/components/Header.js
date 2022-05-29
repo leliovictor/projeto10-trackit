@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <Content>
       <Link to={"/"}>TrackIt</Link> 
-      <img src={login.image} alt="User photo" />
+      <img src={login.image} alt="User" />
     </Content>
   );
 }

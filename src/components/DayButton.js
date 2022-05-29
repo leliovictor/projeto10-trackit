@@ -30,7 +30,7 @@ export default function DayButton({
     } else {
       setSelect(false);
     }
-  }, [habit]);
+  },[habit.days, index]);
 
   return (
     <WeekButton select={select} onClick={chooseHabitDay}>

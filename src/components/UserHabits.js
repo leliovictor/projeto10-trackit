@@ -8,9 +8,11 @@ import TrashIcon from "../assets/images/trashIcon.svg";
 export default function UserHabits() {
   const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-  const { login, setLogin } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const [myHabits, setMyHabits] = useState([]);
+
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const promise = axios.get(
@@ -25,7 +27,7 @@ export default function UserHabits() {
       .catch((err) => {
         console.log(`Error: ${err}`);
       });
-  }, [login]);
+  }, [refresh,login]);
 
   function checkIfHaveAnyHabits() {
     if (myHabits.length === 0) {
@@ -42,15 +44,15 @@ export default function UserHabits() {
 
   function deleteHabit(id) {
     const text = "Gostaria de deletar esse hábito?";
-    if (window.confirm(text) == true) {
+    if (window.confirm(text) === true) {
       const promise = axios.delete(
         `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
         login.config
       );
-
-      promise.catch((err) => console.log(`Error: ${err}`));
-
-      setLogin({ ...login, habitDelete: id });
+      
+      promise
+      .then((res) => setRefresh(!refresh))
+      .catch((err) => console.log(`Error: ${err}`));
     }
   }
 
