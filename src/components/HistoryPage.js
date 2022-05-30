@@ -9,12 +9,13 @@ import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
-export default function RecordsPage() {
+export default function HistoryPage() {
+  
   const { login } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  /* const [dateHistory, setDateHistory] = useState([]);
+  const [dateHistory, setDateHistory] = useState([]);
 
   useEffect(() => {
     const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily",login.config);
@@ -25,98 +26,6 @@ export default function RecordsPage() {
   
   },[]);
 
-*/
-
-  const dateHistory = [
-    //SUBSTITUIR POR UM GET API  <----
-    {
-      day: "20/05/2022",
-      habits: [
-        {
-          id: 3,
-          name: "Acordar",
-          date: "2022-05-20T12:00:00.000Z",
-          weekDay: 4,
-          historyId: null,
-          done: false,
-        },
-      ],
-    },
-    {
-      day: "19/05/2022",
-      habits: [
-        {
-          id: 3,
-          name: "Acordar",
-          date: "2022-05-19T12:00:00.000Z",
-          weekDay: 3,
-          historyId: 626,
-          done: true,
-        },
-        {
-          id: 1,
-          name: "Ler 1 capítulo do livro",
-          date: "2022-05-19T12:00:00.000Z",
-          weekDay: 3,
-          historyId: 625,
-          done: true,
-        },
-      ],
-    },
-    {
-      day: "18/05/2022",
-      habits: [
-        {
-          id: 3,
-          name: "Acordar",
-          date: "2022-05-18T12:00:00.000Z",
-          weekDay: 2,
-          historyId: 7,
-          done: true,
-        },
-      ],
-    },
-    {
-      day: "17/05/2022",
-      habits: [
-        {
-          id: 1,
-          name: "Ler 1 capítulo do livro",
-          date: "2022-05-17T12:00:00.000Z",
-          weekDay: 1,
-          historyId: 1,
-          done: true,
-        },
-      ],
-    },
-    {
-      day: "16/05/2022",
-      habits: [
-        {
-          id: 1,
-          name: "Ler 1 capítulo do livro",
-          date: "2022-05-16T12:00:00.000Z",
-          weekDay: 0,
-          historyId: null,
-          done: false,
-        },
-      ],
-    },
-    {
-      day: "14/05/2022",
-      habits: [
-        {
-          id: 1,
-          name: "Ler 1 capítulo do livro",
-          date: "2022-05-14T12:00:00.000Z",
-          weekDay: 5,
-          historyId: null,
-          done: false,
-        },
-      ],
-    },
-  ];
-
   const [calendarDay, setCalendarDay] = useState(new Date());
 
   function changeDate(e) {
@@ -124,12 +33,14 @@ export default function RecordsPage() {
   }
 
   function defineDateColor(date) {
+
+    const today = dayjs().format("DD/MM/YYYY");
     const dateStr = dayjs(date).format("DD/MM/YYYY");
     let dateHabits = null;
     let classBackground = null;
 
     dateHistory.map((obj) => {
-      if (obj.day === dateStr) {
+      if (obj.day === dateStr && obj.day !== today) {
         dateHabits = obj.habits;
       }
     });

@@ -29,8 +29,6 @@ export default function HabitCreation({ display, setCreationHabitDisplay }) {
       login.config
     );
 
-    //O THEN REMOVE O DISABLE E ESCONDE MENU (OK), RESETAR ADD HABIT BUTTON(OK)
-
     promise
       .then((res) => {
         sucessCreationHabit(res.data);

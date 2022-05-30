@@ -13,7 +13,7 @@ import HistoryDate from "./HistoryDate";
 
 export default function App() {
 
-    const [login, setLogin] = useState({}); //Fazer de acordo com a necessidade;
+    const [login, setLogin] = useState({});
 
   return (
     <UserContext.Provider value={{login, setLogin}}> 

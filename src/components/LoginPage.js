@@ -7,8 +7,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 
-//FINAL DO PROJETO, MUDAR O VALUE DOS INPUT PARA A VARIAVEL {EMAIL,PASSWORD};
-
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
-import { Link } from "react-router-dom"; //SO PRA AGILIZAR A CONSTRUÇÃO, REMOVER O LINK DO H1 AO TERMINAR
+import { Link } from "react-router-dom";
 
 export default function Header() {
 

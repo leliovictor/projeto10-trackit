@@ -26,7 +26,7 @@ export default function HistoryDate() {
       <Header />
       <h1>{dateHabit.day}</h1>
       {dateHabit.habits.map((obj, index) => (
-        <Conteiner>
+        <Conteiner key={index}>
           <h2>{obj.name}</h2>
           {checkifDone(obj.done)}
         </Conteiner>
