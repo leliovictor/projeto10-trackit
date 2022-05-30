@@ -3,11 +3,32 @@ import Footer from "./Footer";
 import styled from "styled-components";
 import Calendar from "react-calendar";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function RecordsPage() {
-  const dateHistory = [ //SUBSTITUIR POR UM GET API  <----
+  const { login } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  /* const [dateHistory, setDateHistory] = useState([]);
+
+  useEffect(() => {
+    const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily",login.config);
+  
+    promise
+    .then((res) => setDateHistory(res.data))
+    .catch((err)=> alert(`Error: ${err.response.data.message}`));
+  
+  },[]);
+
+*/
+
+  const dateHistory = [
+    //SUBSTITUIR POR UM GET API  <----
     {
       day: "20/05/2022",
       habits: [
@@ -103,7 +124,6 @@ export default function RecordsPage() {
   }
 
   function defineDateColor(date) {
-    
     const dateStr = dayjs(date).format("DD/MM/YYYY");
     let dateHabits = null;
     let classBackground = null;
@@ -127,6 +147,21 @@ export default function RecordsPage() {
     return classBackground;
   }
 
+  function selectDay(date) {
+    let dateStr = dayjs(date).format("DD/MM/YYYY");
+    const selectDate = dateHistory.filter((obj) => obj.day === dateStr);
+    if (selectDate.length !== 0) {
+      dateStr = dateStr.replace("/",".");
+      dateStr = dateStr.replace("/",".");
+      
+      navigate(`/historico/${dateStr}`, {
+        state: {
+          selectDate,
+        },
+      });
+    }
+  }
+
   return (
     <Content>
       <Header />
@@ -136,6 +171,7 @@ export default function RecordsPage() {
           tileClassName={({ date }) => defineDateColor(date)}
           onChange={changeDate}
           value={calendarDay}
+          onClickDay={(date) => selectDay(date)}
         />
       </CalendarDiv>
       <Footer />
