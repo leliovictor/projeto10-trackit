@@ -1,7 +1,7 @@
 import Logo from "../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,6 @@ import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-
-  const algo = "disabled";
 
   const { setLogin } = useContext(UserContext);
 
@@ -27,9 +25,9 @@ export default function LoginPage() {
     e.preventDefault();
 
     const body = {
-            email,
-            password
-        }
+      email,
+      password,
+    };
 
     const promise = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
@@ -54,6 +52,8 @@ export default function LoginPage() {
       },
     });
 
+    saveLoginInLocalStorage(obj);
+
     navigate("/hoje");
   }
 
@@ -62,6 +62,39 @@ export default function LoginPage() {
 
     return "Entrar";
   }
+
+  function saveLoginInLocalStorage(obj) {
+    const body = {
+      email: obj.email,
+      password: obj.password,
+    };
+
+    const bodySave = JSON.stringify(body);
+    localStorage.setItem("autoLogin", bodySave);
+  }
+
+  function checkLocalStorageToLogin() {
+    const bodySave = localStorage.getItem("autoLogin");
+    const body = JSON.parse(bodySave);
+
+    if (body !== null) {
+      setLoading(true);
+
+      const promise = axios.post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+        body
+      );
+
+      promise
+        .then((res) => registerLogin(res.data))
+        .catch((err) => {
+          alert(`Error: ${err.response.data.message}`);
+          setLoading(false);
+        });
+    }
+  }
+
+  useEffect(() => checkLocalStorageToLogin(), []);
 
   return (
     <Content>
